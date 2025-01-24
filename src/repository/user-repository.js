@@ -34,6 +34,15 @@ class UserRepository {
       throw error;
     }
   }
+
+  async findBy(data) {
+    try {
+      const response = await User.findOne(data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = UserRepository;

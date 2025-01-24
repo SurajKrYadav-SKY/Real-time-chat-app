@@ -1,4 +1,5 @@
 const UserService = require("../services/user-service");
+const UserRepository = require("../repository/user-repository");
 
 const userService = new UserService();
 
@@ -24,6 +25,26 @@ const signup = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const token = await userService.login(req.body);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully logged in",
+      data: token,
+      error: {},
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      data: {},
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   signup,
+  login,
 };

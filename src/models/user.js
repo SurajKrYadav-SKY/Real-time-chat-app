@@ -52,7 +52,7 @@ userSchema.methods.comparePassword = function compare(password) {
 };
 
 userSchema.methods.generateJWT = function genetate() {
-  return jwt.sing({ id: this._id, email: this.email }, SECRET_KEY, {
+  return jwt.sign({ id: this._id, email: this.email }, SECRET_KEY, {
     expiresIn: "2h",
   });
 };
