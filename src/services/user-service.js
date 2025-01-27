@@ -24,6 +24,15 @@ class UserService {
     }
   }
 
+  async getUserById(id) {
+    try {
+      const user = await this.userRepository.get(id);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async login(data) {
     try {
       const user = await this.getUserByEmail(data.email);

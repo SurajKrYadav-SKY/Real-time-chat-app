@@ -13,6 +13,8 @@ class UserRepository {
 
   async get(id) {
     try {
+      const user = await User.findById(id);
+      return user;
     } catch (error) {
       console.log(error);
       throw error;

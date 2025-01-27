@@ -4,9 +4,12 @@ const apiRoutes = require("./routes/index");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { ORIGIN } = require("./config/serverConfig");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = process.env.PORT;
+
+app.use(cookieParser());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
