@@ -14,10 +14,13 @@ const signup = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     });
     return res.status(201).json({
-      success: true,
-      message: "Successfully created a new user",
-      data: response,
-      error: {},
+      id: response.id,
+      email: response.email,
+      profileSetup: response.profileSetup,
+      firstName: response.firstName,
+      lastName: response.lastName,
+      image: response.image,
+      color: response.color,
     });
   } catch (error) {
     return res.status(500).json({
@@ -38,18 +41,13 @@ const login = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None for cross-origin in production
     });
     return res.status(200).json({
-      success: true,
-      message: "Successfully logged in",
-      user: {
-        id: user.id,
-        email: user.email,
-        profileSetup: user.profileSetup,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        image: user.image,
-        color: user.color,
-      },
-      error: {},
+      id: user.id,
+      email: user.email,
+      profileSetup: user.profileSetup,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      image: user.image,
+      color: user.color,
     });
   } catch (error) {
     res.status(500).json({
