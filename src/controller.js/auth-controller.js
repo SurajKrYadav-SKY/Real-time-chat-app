@@ -63,7 +63,7 @@ const login = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
   try {
-    console.log("inside controller", req.userId);
+    // console.log("inside controller", req.userId);
     const user = await userService.getUserById(req.userId);
     if (!user) {
       return res.status(404).json({ message: "User with given id not found" });
@@ -87,8 +87,41 @@ const getUserInfo = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  try {
+    console.log("user Id is : ", req.userId);
+    const user = await userService.updateProfile(req.userId, req.body);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+        data: {},
+      });
+    }
+
+    return res.status(200).json({
+      id: user.id,
+      email: user.email,
+      profileSetup: user.profileSetup,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      image: user.image,
+      color: user.color,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong.",
+      data: {},
+      error: error.message || {},
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
   getUserInfo,
+  updateProfile,
 };

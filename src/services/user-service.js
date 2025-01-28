@@ -52,6 +52,15 @@ class UserService {
       throw error;
     }
   }
+
+  async updateProfile(userId, data) {
+    try {
+      const user = await this.userRepository.update(userId, data);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = UserService;

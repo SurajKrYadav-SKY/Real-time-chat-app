@@ -21,10 +21,40 @@ class UserRepository {
     }
   }
 
-  async update(id, data) {
+  async update(userId, data) {
     try {
+      const { firstName, lastName, color } = data;
+      console.log(
+        "data type of incomming data",
+        typeof firstName,
+        typeof lastName,
+        typeof color
+      );
+
+      console.log("color :", color);
+      if (!firstName || !lastName || color === null) {
+        throw new Error("First name, last name, and color are required");
+      }
+
+      if (typeof firstName !== "string" || typeof lastName !== "string") {
+        throw new Error("First name, last name, and color must be strings");
+      }
+      const result = await User.findByIdAndUpdate(
+        userId,
+        {
+          firstName,
+          lastName,
+          color,
+          profileSetup: true,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      return result;
     } catch (error) {
-      console.log(error);
+      console.error("Error in the update method:", error.message);
       throw error;
     }
   }
