@@ -7,4 +7,5 @@ module.exports = {
   SECRET_KEY: process.env.SECRET_KEY,
   SALT: process.env.SALT,
   ORIGIN: process.env.ORIGIN,
+  PROFILE_UPLOAD_DIR: process.env.PROFILE_UPLOAD_DIR,
 };

@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { unlink } = require("fs/promises");
 
 class UserRepository {
   async create(data) {
@@ -73,6 +74,44 @@ class UserRepository {
       return response;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async updateProfile(userId, fileName) {
+    console.log(fileName);
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      user.image = fileName;
+      await user.save();
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async removeProfile(userId) {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("user not found");
+      }
+      if (user.image) {
+        try {
+          await unlink(user.image); // Delete the file
+        } catch (err) {
+          console.error("Error deleting image file:", err);
+        }
+      }
+      user.image = null;
+      await user.save();
+      return user;
+    } catch (error) {
+      console.log(error);
     }
   }
 }

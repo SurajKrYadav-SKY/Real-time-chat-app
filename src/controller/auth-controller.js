@@ -35,8 +35,11 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await userService.login(req.body);
-    res.cookie("jwt", user.generateJWT(), {
+    const token = user.generateJWT();
+
+    res.cookie("jwt", token, {
       maxAge: 3600000,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Secure only in production
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None for cross-origin in production
     });
@@ -87,7 +90,7 @@ const getUserInfo = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    console.log("user Id is : ", req.userId);
+    // console.log("user Id is : ", req.userId);
     const user = await userService.updateProfile(req.userId, req.body);
 
     if (!user) {
@@ -117,9 +120,51 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const addProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Profile Image is required",
+      });
+    }
+    const payload = {
+      userId: req.userId,
+      file: req.file,
+    };
+    const response = await userService.updateProfileImage(payload);
+    return res.status(200).json({
+      success: true,
+      image: response.image,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong.",
+    });
+  }
+};
+
+const removeProfileImage = async (req, res) => {
+  try {
+    await userService.removeProfileImage(req.userId);
+    return res.status(200).json({
+      message: "Profile image removed successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong.",
+      data: {},
+      error: error.message || {},
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
   getUserInfo,
   updateProfile,
+  addProfileImage,
+  removeProfileImage,
 };
