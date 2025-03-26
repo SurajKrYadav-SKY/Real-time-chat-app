@@ -1,5 +1,6 @@
 const UserRepository = require("../repository/user-repository");
-const { rename } = require("fs/promises");
+const fs = require("fs").promises;
+const path = require("path");
 
 class UserService {
   constructor() {
@@ -64,11 +65,16 @@ class UserService {
   async updateProfileImage(data) {
     try {
       const date = Date.now();
-      const fileName = `uploads/profiles/${date}-${data.file.originalname}`;
-      await rename(data.file.path, fileName);
+      // const fileName = `uploads/profiles/${date}-${data.file.originalname}`;
+      const fileName = `${date}-${data.file.originalname}`;
+
+      const newFilePath = path.join(PROFILE_UPLOAD_DIR, fileName);
+
+      await fs.rename(data.file.path, newFilePath);
+
       const updatedUser = await this.userRepository.updateProfile(
         data.userId,
-        fileName
+        `uploads/profiles/${fileName}` // it matches what frontend expects
       );
       return updatedUser;
     } catch (error) {

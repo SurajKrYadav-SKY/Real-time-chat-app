@@ -40,6 +40,12 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save", function (next) {
   const user = this;
+
+  // this is the logic to hash the password only when the password is updated or during signup.
+  if (!user.isModified("password")) {
+    return next();
+  }
+
   const saltRounds = Number(SALT);
   const salt = bcrypt.genSaltSync(saltRounds);
   const encryptedPassword = bcrypt.hashSync(user.password, salt);

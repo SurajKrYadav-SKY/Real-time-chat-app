@@ -35,7 +35,7 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     cb(null, true);
   } else {
-    cb(new Error("Only .jpeg, .jpg, .webp or .png files are allowed"));
+    cb(new Error("Only .jpeg, .jpg, .webp, .svg or .png files are allowed"));
   }
 };
 

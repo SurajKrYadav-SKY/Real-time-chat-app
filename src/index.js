@@ -3,11 +3,10 @@ const connect = require("./config/db");
 const apiRoutes = require("./routes/index");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { ORIGIN, PROFILE_UPLOAD_DIR } = require("./config/serverConfig");
+const { ORIGIN, PROFILE_UPLOAD_DIR, PORT } = require("./config/serverConfig");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-const PORT = process.env.PORT;
 
 app.use(cookieParser());
 
