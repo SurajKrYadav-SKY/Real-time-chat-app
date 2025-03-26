@@ -160,6 +160,27 @@ const removeProfileImage = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  try {
+    res.cookie("jwt", "", {
+      maxAge: 1,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Secure only in production
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None for cross-origin in production
+    });
+    return res.status(200).json({
+      message: "Logout successful",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong.",
+      error: error.message || {},
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -167,4 +188,5 @@ module.exports = {
   updateProfile,
   addProfileImage,
   removeProfileImage,
+  logout,
 };

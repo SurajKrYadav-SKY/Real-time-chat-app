@@ -6,6 +6,7 @@ const {
   updateProfile,
   addProfileImage,
   removeProfileImage,
+  logout,
 } = require("../../controller/auth-controller");
 const { verifyToken } = require("../../middleware/auth-middleware");
 const router = express.Router();
@@ -15,6 +16,7 @@ const profileUpload = upload.single("profile-image");
 
 router.post("/signup", signup);
 router.post("/login", login);
+router.post("/logout", logout);
 router.get("/user-info", verifyToken, getUserInfo);
 router.post("/update-profile", verifyToken, updateProfile);
 router.post("/add-profile-image", verifyToken, profileUpload, addProfileImage);
